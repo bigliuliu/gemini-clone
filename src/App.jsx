@@ -1,14 +1,15 @@
-import React from 'react'
-import Sidebar from './components/Sidebar/Sidebar'
-import Main from './components/Main/Main'
+import React from "react";
+import Sidebar from "./components/Sidebar/Sidebar";
+import Main from "./components/Main/Main";
 
 const App = () => {
+  console.log(import.meta.env.VITE_GEMINI_API_KEY, "========"); 
   return (
     <>
-      <Sidebar/>
-      <Main/>
+      <Sidebar />
+      <Main />
     </>
-  )
-}
+  );
+};
 
-export default App
+export default App;
