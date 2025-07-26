@@ -1,7 +1,8 @@
-import React, { useContext } from "react";
+import React, { useContext,useState,useEffect } from "react";
 import "./Main.css";
 import { assets } from "../../assets/assets";
 import { Context } from "../../context/Context";
+import ReactMarkdown from "react-markdown";
 const Main = () => {
   const {
     onSent,
@@ -12,6 +13,21 @@ const Main = () => {
     loading,
     resultData,
   } = useContext(Context);
+
+
+  const [visibleText, setVisibleText] = useState("");
+
+  useEffect(() => {
+    let i = -1;
+    setVisibleText(""); // 每次内容变化清空
+    const timer = setInterval(() => {
+      i++;
+      setVisibleText((prev) => prev + resultData[i]);
+      if (i >=resultData.length-1) clearInterval(timer);
+    }, 20);
+    return () => clearInterval(timer);
+  }, [resultData]);
+
   return (
     <div className="main">
       <div className="nav">
@@ -61,7 +77,8 @@ const Main = () => {
                   <hr />
                 </div>
               ) : (
-                <p dangerouslySetInnerHTML={{ __html: resultData }}></p>
+                // <p dangerouslySetInnerHTML={{ __html: resultData }}></p>
+                <ReactMarkdown>{visibleText}</ReactMarkdown>
               )}
             </div>
           </div>
@@ -74,6 +91,11 @@ const Main = () => {
               value={input}
               type="text"
               placeholder="Enter a prompt here"
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  onSent();
+                }
+              }}
             />
             <div>
               <img src={assets.gallery_icon} alt="" />
